@@ -1,14 +1,21 @@
 import { app, BrowserWindow } from 'electron'
+import path from 'path'
 
 
-app.on('ready', () => {
-  let win = new BrowserWindow({
-    width: 800,
+app.whenReady().then(() => {
+  const mainWindow = new BrowserWindow({
+    width:800,
     height: 600,
     webPreferences: {
-      nodeIntegration: false,
-      contextIsolation: true,
+      preload: path.resolve(__dirname, '../preload/preload.js'),
     }
   })
-  win.webContents.openDevTools()
+
+  mainWindow.webContents.openDevTools()
+
+  mainWindow.loadURL('http://localhost:3000')
+
+}).catch(err => {
+  console.log(err);
+  
 })
